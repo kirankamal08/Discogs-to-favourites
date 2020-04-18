@@ -1,1 +1,1 @@
-# Discogs-to-favourites
+# Using Discogs third party api to get the records from the discogs database to get the list of any music albums or artists.
