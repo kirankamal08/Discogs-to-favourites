@@ -51,9 +51,6 @@ DiscogsOAuth.prototype.setConfig = function(customConfig){
  * @param {function} [callback] - Callback function receiving the data
  * @returns {DiscogsOAuth}
  */
-
-const consumerKey = 'fdcuhtjKYqnpoIrvAaQK';
-const consumerSecret = 'UkMawUgGphTQmPjFIzfItIASxmwMjUvf';
  
 DiscogsOAuth.prototype.getRequestToken = function(consumerKey, consumerSecret, callbackUrl, callback){
 	var auth = this.auth, config = this.config;
