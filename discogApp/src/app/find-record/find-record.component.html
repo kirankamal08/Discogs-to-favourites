@@ -1,13 +1,181 @@
+<div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content white-text">
+        <div class="row">
+    <div class="col s5">
 <div class="container">
-<div class="row justify-content-center">
-<div class="form-group col-md-4 col-md-offset-5 align-center ">
+<!--<div class="row justify-content-center"> -->
+<div class="form-group col-md-4 col-md-offset-5 align-center "> 
     <form #fval="ngForm" (ngSubmit)="musicSubmit(fval)">
     <div class="form-group">
-      <label for="jjhj">Search Here</label>
-      <input type="text" class="form-control" name= "InputSearch" id="InputSearch" [(ngModel)]="fval.InputSearch">
+      <label class="search" for="jjhj">Search Here</label>
+      <input type="text" class="form-control" name= "InputSearch" id="InputSearch" [(ngModel)]="fval.InputSearch" required>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
 </div> 
+<!--</div> -->
+<!-- Discogs Search results form -->
+<form #addval="ngForm" (ngSubmit)="addFav(addval)">
+ <!--  <div *ngFor="let dis of discogs ; let in = index"> 
+     <div *ngIf="dis.master_id">  -->
+      <!--    <div *ngIf="disfinder.discogs"> -->
+     <div class="input-field col s12">
+            <input type="text" name="title"  id="title" [(ngModel)]="disfinder.selectedRec.title">
+            <label>Name :</label>
+        </div>
+        <div class="input-field col s12">
+          <input type="text" name="uri" id="uri" [(ngModel)]="disfinder.selectedRec.uri">
+          <label>Uri :</label>
+        </div>
+        <div class="input-field col s12">
+          <input type="text" name="masterID" id="masterID" [(ngModel)]="disfinder.selectedRec.master_id">
+          <label>Master ID :</label>
+        </div>
+        <div class="input-field col s12">
+          <input type="text" name="style" id="style" [(ngModel)]="disfinder.selectedRec.style">
+          <label>Style :</label>
+        </div><br> 
+
+        
+        
+   <!--     <div class="input-field col s12">
+          <label>Name :</label>
+          <input type="text" name="title-{{in}}" id="title-{{in}}" [(ngModel)]="dis.title">
+      </div>
+      <div class="input-field col s12">
+        <label>Uri :</label>
+        <input type="text" name="uri-{{in}}" id="uri-{{in}}"  [(ngModel)]="dis.uri">
+      </div>
+      <div class="input-field col s12">
+        <label>Master ID :</label>
+        <input type="text" name="masterID-{{in}}" id="masterID-{{in}}"  [(ngModel)]="dis.master_id">
+      </div>
+      <div class="input-field col s12">
+        <label>Style :</label>
+        <input type="text" name="style-{{in}}" id="style-{{in}}"  [(ngModel)]="dis.style">
+      </div><br> 
+   </div>
+  </div> -->
+    <div class="input-field col s12">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div> 
+</form>
 </div>
+<!--<pre>{{album.results | json}}</pre> -->
+<!--<pre>{{discogs.thumb | json}}</pre>-->
+<div class="col s7">
+  <div class="form-group col-md-4 col-md-offset-5 align-center "> 
+    <form #genreval="ngForm" (ngSubmit)="genreFilter(genreval)">
+    <div class="form-group">
+      <label class="filter" for="Genre">Filter Genre</label>
+      <input type="text" class="form-control" name= "genSearch" id="genSearch" [(ngModel)]="genreval.genSearch" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+</div>
+<div class="form-group col-md-4 col-md-offset-5 align-center "> 
+  <form #genreval="ngForm" (ngSubmit)="removeFilter()">
+    <button type="submit" class="btn btn-primary rem-filter">Remove Filter</button>
+  </form>
+</div> 
+  <table class="responsive-table highlight">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Uri</th>
+        <th>Genre</th>
+        <th></th>
+      </tr>
+    </thead>
+
+  <!-- <tr *ngFor="let disp of disfinder.discogs">
+      <td>{{disp.title}}</td>
+      <td>{{disp.uri}}</td>
+      <td>{{disp.style}}</td>
+      <td>
+          <a class="action-btn" (click)="onEdit(emp)">
+            <i class="material-icons">edit</i>
+          </a>
+          <a class="action-btn" (click)="onDelete(emp._id,employeeForm)">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+    </tr> -->
+    {{genre1}}
+<div *ngIf = "genre1 == false">
+    <tr *ngFor="let item of pageOfItems">
+      <td>{{item.title}}</td>
+      <td>{{item.uri}}</td>
+      <td>{{item.style}}</td>
+      <td>
+          <a class="action-btn" (click)="onDelete(item._id)">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+    </tr>
+    <div class="card-footer pb-0 pt-3">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item first-item">
+              <a routerLink [queryParams]="{ page: 1 }" class="page-link">First</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item previous-item">
+              <a routerLink [queryParams]="{ page: pager.currentPage - 1 }" class="page-link">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item number-item">
+              <a routerLink [queryParams]="{ page: page }" class="page-link">{{page}}</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item next-item">
+              <a routerLink [queryParams]="{ page: pager.currentPage + 1 }" class="page-link">Next</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item last-item">
+              <a routerLink [queryParams]="{ page: pager.totalPages }" class="page-link">Last</a>
+          </li>
+      </ul>
+  </div>
+</div>
+
+<div *ngIf = "pageOfItems1">
+  <tr *ngFor="let item of pageOfItems1">
+    <td>{{item.title}}</td>
+    <td>{{item.uri}}</td>
+    <td>{{item.style}}</td>
+    <td>
+        <a class="action-btn" (click)="onDelete(item._id)">
+          <i class="material-icons">delete</i>
+        </a>
+      </td>
+  </tr>
+  <div class="card-footer pb-0 pt-3">
+    <ul *ngIf="pager1.pages && pager1.pages.length" class="pagination">
+        <li [ngClass]="{disabled:pager1.currentPage === 1}" class="page-item first-item">
+            <a routerLink [queryParams]="{ pageF: 1 }" class="page-link">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager1.currentPage === 1}" class="page-item previous-item">
+            <a routerLink [queryParams]="{ pageF: pager1.currentPage - 1 }" class="page-link">Previous</a>
+        </li>
+        <li *ngFor="let page of pager1.pages" [ngClass]="{active:pager1.currentPage === page}" class="page-item number-item">
+            <a routerLink [queryParams]="{ pageF: page,style: genre1 }" class="page-link">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager1.currentPage === pager1.totalPages}" class="page-item next-item">
+            <a routerLink [queryParams]="{ pageF: pager1.currentPage + 1 }" class="page-link">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager1.currentPage === pager1.totalPages}" class="page-item last-item">
+            <a routerLink [queryParams]="{ pageF: pager1.totalPages }" class="page-link">Last</a>
+        </li>
+    </ul>
+</div>
+</div>
+  </table>
+
+</div> <!--col s7 -->
+</div> <!--row--> 
+</div> <!--card content -->
+</div> <!--card -->
+</div> <!--col s12 -->
+</div> <!--first row div -->
+
+
